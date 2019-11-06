@@ -165,9 +165,11 @@ type Person = {
   name: string;
 }
 
-type Student = Person & {
+type HasGrade = {
   grade: number
 };
+
+type Student = Person & HasGrade;
 
 const student: Student = {
   name: 'Name',
@@ -197,7 +199,11 @@ type Labrador = Dog & {
 
 const animal: Animal = { name: '' };
 const dog: Dog = { name: '', bark: () => console.log('woof') };
-const labrador: Labrador =  { name: '', bark: () => console.log('woof'), loudBark: () => console.log('WOOF') };
+const labrador: Labrador = {
+  name: '',
+  bark: () => console.log('woof'),
+  loudBark: () => console.log('WOOF')
+};
 
 const f1 = (a: Dog): Dog => dog;
 const f2 = (a: Dog): Labrador => labrador;
@@ -219,7 +225,7 @@ const faf3: F1 = fa3;
 
 ```ts
 type Animal = {
-  prop: string
+  name: string
 }
 
 type Dog = Animal & {
@@ -229,13 +235,13 @@ type Dog = Animal & {
 type F = (a: Animal) => Animal;
 
 // No errors with strictFunctionTypes flag set to false
-// otherwise Animal is not Assignable: property meow is missing
+// otherwise Animal is not Assignable: property bark is missing
 const f: F = (a: Dog) => {
   a.bark();
   return a;
 }
 
-const animal: Animal = { prop: '' };
+const animal: Animal = { name: '' };
 f(animal);
 ```
 

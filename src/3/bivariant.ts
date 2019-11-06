@@ -1,6 +1,6 @@
 {
   type Animal = {
-    prop: string
+    name: string
   }
 
   type Dog = Animal & {
@@ -8,11 +8,12 @@
   }
 
   type F = (a: Animal) => Animal;
-  const f: F = (a: Animal) => {
+
+  const f: F = (a: Dog) => {
     a.bark();
     return a;
   }
 
-  const animal: Animal = { prop: '' };
+  const animal: Animal = { name: '' };
   f(animal);
 }
