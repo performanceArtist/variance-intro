@@ -3,13 +3,13 @@
     prop: string
   }
 
-  type Cat = Animal & {
-    meow: () => void
+  type Dog = Animal & {
+    bark: () => void
   }
 
   type F = (a: Animal) => Animal;
-  const f: F = (a: Cat) => {
-    a.meow();
+  const f: F = (a: Animal) => {
+    a.bark();
     return a;
   }
 

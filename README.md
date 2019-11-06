@@ -63,7 +63,7 @@ const foo: Foo = new Foo(0);
 const bar: Foo = new Bar(0);
 ```
 
-## #2 Отношения типов
+## #2 Отношения типов, типы высшего порядка
 
 ```ts
 type BadGrade = 1 | 2 | 3;
@@ -108,7 +108,7 @@ const student: Student = {
 const person: Person = student;
 ```
 
-## #3 Типы высшего порядка
+### Типы высшего порядка
 
 ```ts
 type List<T> = T[];
@@ -124,27 +124,59 @@ type TakeReturn<T, R> = (a: T) => R;
 
 ```
 
-## #4 Вариативность
+## #3 Вариативность
 
 ### Инвариативность
 
-Animal: Animal
-Cat: Cat
+* Animal: Animal
+* Dog: Dog
 
 ### Ковариативность
 
-Animal: Animal | Cat
-Cat: Cat
+* Animal: Animal | Dog
+* Dog: Dog
 
 ### Контравариативность
 
-Animal: Animal
-Cat: Animal | Cat
+* Animal: Animal
+* Dog: Animal | Dog
 
 ### Бивариативность
 
-Animal: Animal | Cat
-Cat: Animal | Cat
+* Animal: Animal | Dog
+* Dog: Animal | Dog
+
+### Инвариант
+
+```ts
+type Grade = 1 | 2 | 3 | 4 | 5;
+// 6 is not assgnable to Grade
+const a: Grade = 6;
+```
+
+### Ковариант
+
+```ts
+type Person = {
+  name: string;
+}
+
+type Student = Person & {
+  grade: number
+};
+
+const student: Student = {
+  name: 'Name',
+  grade: 3
+}
+
+// ok
+const person: Person = student;
+// ok
+const persons: Person[] = [student, student];
+```
+
+### Контравариант/Бивариант
 
 ```ts
 type Animal = {
@@ -179,21 +211,23 @@ const faf2: F1 = fa2;
 const faf3: F1 = fa3;
 ```
 
+### Практические примеры
+
 ```ts
 type Animal = {
   prop: string
 }
 
-type Cat = Animal & {
-  meow: () => void
+type Dog = Animal & {
+  bark: () => void
 }
 
 type F = (a: Animal) => Animal;
 
 // No errors with strictFunctionTypes flag set to false
 // otherwise Animal is not Assignable: property meow is missing
-const f: F = (a: Cat) => {
-  a.meow();
+const f: F = (a: Dog) => {
+  a.bark();
   return a;
 }
 
