@@ -35,7 +35,6 @@ class Bar {
 int main() {
   // ok
   Foo* foo = new Foo(0);
-
   //error: a value of type Foo* cannot be used to initialize an entity of type Bar*
   Bar* bar = new Foo(0);
 }
@@ -76,10 +75,37 @@ const bad: BadGrade = 2;
 const good: GoodGrade = 5;
 
 const goodGrade: GoodGrade = good;
+// not assignable
 const reallyGoodGrade: GoodGrade = bad;
 
 const anyGrade: number = 3;
+// not assignable
 const someGrade: GoodGrade = anyGrade;
+```
+
+![Grade diagram](src/#1/diagrams/grade.png)
+
+```ts
+type Person = {
+  name: string;
+}
+
+type Student = Person & {
+  grade: number
+};
+
+const a: Person = {
+  name: 'Name',
+  grade: 1 // Object literal may only specify known properties
+}
+
+const student: Student = {
+  name: 'Name',
+  grade: 3
+}
+
+// ok
+const person: Person = student;
 ```
 
 ## #3 Типы высшего порядка
@@ -100,6 +126,95 @@ type TakeReturn<T, R> = (a: T) => R;
 
 ## #4 Вариативность
 
+### Инвариативность
+
+Animal: Animal
+Cat: Cat
+
+### Ковариативность
+
+Animal: Animal | Cat
+Cat: Cat
+
+### Контравариативность
+
+Animal: Animal
+Cat: Animal | Cat
+
+### Бивариативность
+
+Animal: Animal | Cat
+Cat: Animal | Cat
+
+```ts
+type Animal = {
+  name: string
+};
+
+type Dog = Animal & {
+  bark: () => void;
+}
+
+type Labrador = Dog & {
+  loudBark: () => void;
+}
+
+const animal: Animal = { name: '' };
+const dog: Dog = { name: '', bark: () => console.log('woof') };
+const labrador: Labrador =  { name: '', bark: () => console.log('woof'), loudBark: () => console.log('WOOF') };
+
+const f1 = (a: Dog): Dog => dog;
+const f2 = (a: Dog): Labrador => labrador;
+const f3 = (a: Dog): Animal => animal;
+type F1 = (a: Dog) => Dog;
+const ff1: F1 = f1;
+const ff2: F1 = f2;
+const ff3: F1 = f3;
+
+const fa1 = (a: Dog): Dog => dog;
+const fa2 = (a: Labrador): Dog => dog;
+const fa3 = (a: Animal): Dog => dog;
+const faf1: F1 = fa1;
+const faf2: F1 = fa2;
+const faf3: F1 = fa3;
+```
+
+```ts
+type Animal = {
+  prop: string
+}
+
+type Cat = Animal & {
+  meow: () => void
+}
+
+type F = (a: Animal) => Animal;
+
+// No errors with strictFunctionTypes flag set to false
+// otherwise Animal is not Assignable: property meow is missing
+const f: F = (a: Cat) => {
+  a.meow();
+  return a;
+}
+
+const animal: Animal = { prop: '' };
+f(animal);
+```
+
+```ts
+type FuncA = (a: { a: number }) => void;
+type FuncB = (b: { b: string }) => void;
+
+type FuncC = FuncA | FuncB;
+type FuncC1 = (a: { a: number } | { b: string }) => void;
+type FuncD = FuncA & FuncB;
+type FuncD1 = (a: { a: number } & { b: string }) => void;
+
+const fc: FuncC = (a: ?) => ?
+const fc1: FuncC1 = (a: ?) => ?
+const fd: FuncD = (a: ?) => ?
+const fd1: FuncD1 = (a: ?) => ?
+```
 
 ## Ссылки
 
