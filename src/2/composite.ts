@@ -2,9 +2,11 @@ type Person = {
   name: string;
 }
 
-type Student = Person & {
+type HasGrade = {
   grade: number
 };
+
+type Student = Person & HasGrade;
 
 const a: Person = {
   name: 'Name',

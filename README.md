@@ -83,16 +83,18 @@ const anyGrade: number = 3;
 const someGrade: GoodGrade = anyGrade;
 ```
 
-![Grade diagram](src/#1/diagrams/grade.png)
+![Grade diagram](./src/2/diagrams/grade.png)
 
 ```ts
 type Person = {
   name: string;
 }
 
-type Student = Person & {
+type HasGrade = {
   grade: number
 };
+
+type Student = Person & HasGrade;
 
 const a: Person = {
   name: 'Name',
@@ -107,6 +109,8 @@ const student: Student = {
 // ok
 const person: Person = student;
 ```
+
+![Student diagram](src/2/diagrams/student.png)
 
 ### Типы высшего порядка
 
@@ -211,7 +215,7 @@ const faf2: F1 = fa2;
 const faf3: F1 = fa3;
 ```
 
-### Практические примеры
+### "Практические" примеры
 
 ```ts
 type Animal = {
