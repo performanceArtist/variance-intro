@@ -63,7 +63,7 @@ const foo: Foo = new Foo(0);
 const bar: Foo = new Bar(0);
 ```
 
-## #2 Отношения типов, типы высшего порядка
+## #2 Отношения типов
 
 ```ts
 type BadGrade = 1 | 2 | 3;
@@ -139,22 +139,9 @@ const person: Person = student;
 ```ts
 type List<T> = T[];
 
-type Pair<F, S> = {
-  first: F,
-  second: S
-}
-
 type Return<T> = () => T;
 
 type Take<T> = (a: T) => void;
-```
-
-### Инвариант
-
-```ts
-type Grade = 1 | 2 | 3 | 4 | 5;
-// 6 is not assgnable to Grade
-const a: Grade = 6;
 ```
 
 ### Ковариант
