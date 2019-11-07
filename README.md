@@ -112,22 +112,6 @@ const person: Person = student;
 
 ![Student diagram](src/2/diagrams/student.png)
 
-### Типы высшего порядка
-
-```ts
-type List<T> = T[];
-
-type Pair<F, S> = {
-  first: F,
-  second: S
-}
-
-type Return<T> = () => T;
-
-type TakeReturn<T, R> = (a: T) => R;
-
-```
-
 ## #3 Вариативность
 
 ### Инвариативность
@@ -149,6 +133,21 @@ type TakeReturn<T, R> = (a: T) => R;
 
 * Animal: Animal | Dog
 * Dog: Animal | Dog
+
+### Типы высшего порядка
+
+```ts
+type List<T> = T[];
+
+type Pair<F, S> = {
+  first: F,
+  second: S
+}
+
+type Return<T> = () => T;
+
+type Take<T> = (a: T) => void;
+```
 
 ### Инвариант
 
@@ -182,7 +181,7 @@ const person: Person = student;
 const persons: Person[] = [student, student];
 ```
 
-### Контравариант/Бивариант
+### Контравариант
 
 ```ts
 type Animal = {
@@ -221,7 +220,7 @@ const faf2: F1 = fa2;
 const faf3: F1 = fa3;
 ```
 
-### "Практические" примеры
+### Бивариант в typescript
 
 ```ts
 type Animal = {
@@ -249,16 +248,17 @@ f(animal);
 type FuncA = (a: { a: number }) => void;
 type FuncB = (b: { b: string }) => void;
 
-type FuncC = FuncA | FuncB;
-type FuncC1 = (a: { a: number } | { b: string }) => void;
+
 type FuncD = FuncA & FuncB;
 type FuncD1 = (a: { a: number } & { b: string }) => void;
 
-const fc: FuncC = (a: ?) => ?
-const fc1: FuncC1 = (a: ?) => ?
-const fd: FuncD = (a: ?) => ?
-const fd1: FuncD1 = (a: ?) => ?
+const fd: FuncD = (a: ?) => void
+const fd1: FuncD1 = (a: ?) => void
+
+
+type FuncC = FuncA | FuncB;
+type FuncC1 = (a: { a: number } | { b: string }) => void;
+
+const fc: FuncC = (a: ?) => void
+const fc1: FuncC1 = (a: ?) => void
 ```
-
-## Ссылки
-

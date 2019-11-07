@@ -1,3 +1,5 @@
+// @flow
+
 type FuncD = FuncA & FuncB; // {} => just {} - no supertype
 type FuncD1 = (a: { a: number } & { b: string }) => void; // { a: number, b: string } => this + supertypes
 

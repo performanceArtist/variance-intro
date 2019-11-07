@@ -7,4 +7,4 @@ type Pair<F, S> = {
 
 type Return<T> = () => T;
 
-type TakeReturn<T, R> = (a: T) => R;
+type Take<T> = (a: T) => void;
